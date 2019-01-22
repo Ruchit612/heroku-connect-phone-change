@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Phone Changer</title>
+    <title>Expense Application</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <style>
@@ -13,8 +13,22 @@
         }
     </style>
     <script>
+	       function calculate(){
+			var result = document.getElementById('result');
+			var remaining = document.getElementById('remaining');
+			var el, i = 0, total = 0; 
+			while(el = document.getElementById('v'+(i++)) ) {
+			el.value = el.value.replace(/\\D/,"");
+			total = total + Number(el.value);
+				}
+result.value = total;
+remaining.value = 5000-total;
+if(document.getElementById('v0').value =="" && document.getElementById('v1').value =="" && document.getElementById('v2').value =="" && document.getElementById('v3').value =="" && document.getElementById('v4').value =="" && document.getElementById('v5').value =="" && document.getElementById('v6').value =="" && document.getElementById('v7').value =="" && document.getElementById('v8').value ==""){
+ result.value ="";
+}
+}
         $(function() {
-            $("#phoneChangerForm").submit(function(event) {
+            $("#Expensedata").submit(function(event) {
                 event.preventDefault();
 
                 var errorMessage = $("#errorMessage");
@@ -23,13 +37,21 @@
 
                 $("#message").hide();
 
-                var firstName = $("#firstName").val();
-                var lastName = $("#lastName").val();
-                var email = $("#email").val();
-                var phone = $("#phone").val();
+                var user = $("#user").val();
+				var veg = $("#veg").val();
+                var vegamount = $("#v0").val();
+				var bigbasketamount = $("#v1").val();
+				var milkcurdamount = $("#v2").val();
+				var breadamount = $("#v3").val();
+				var sweetamount = $("#v4").val();
+				var medicineamount = $("#v5").val();
+				var snacksamount = $("#v6").val();
+				var bangbajaramount = $("#v7").val();
+				var other = $("#other").val();
+				var otheramount = $("#v8").val();
 
-                if (firstName.length == 0 || lastName.length == 0 || email.length == 0 || phone.length == 0) {
-                    errorMessage.text("All of the fields are required.");
+                if (veg.length == 0 && vegamount.length == 0 && bigbasketamount.length == 0 && milkcurdamount.length == 0 && sweetamount.length == 0 && medicineamount.length == 0 && snacksamount.length == 0 && bangbajaramount.length == 0 && other.length == 0 && otheramount.length == 0) {
+                    errorMessage.text("Atleast one field is required for submission!!");
                     error.show();
                 }
                 else {
@@ -37,18 +59,32 @@
                         url: event.target.action,
                         method: event.target.method,
                         data: JSON.stringify({
-                            firstName: firstName,
-                            lastName: lastName,
-                            email: email,
-                            phone: phone
+                            User__c: user,
+							Vegetable__c: veg,
+                            Vegetable_Amount__c: vegamount,
+                            Big_Basket_Amount__c: bigbasketamount,
+                            Milk_Curd_Amount__c: milkcurdamount,
+							Bread_Amount__c: breadamount,
+							Sweet_Amount__c: sweetamount,
+							Medicine_Amount__c: medicineamount,
+							Snacks_Amount__c: snacksamount,
+							Bang_Bajar_Amount__c: bangbajaramount,
+							Other__c: other,
+							Other_Amount__c: otheramount
                         }),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function(data) {
-                            $("#firstName").val("");
-                            $("#lastName").val("");
-                            $("#email").val("");
-                            $("#phone").val("");
+						    $("#v0").val("");
+							$("#v1").val("");
+							$("#v2").val("");
+							$("#v3").val("");
+							$("#v4").val("");
+							$("#v5").val("");
+							$("#v6").val("");
+							$("#v7").val("");
+							$("#v8").val("");
+							$("#other").val("");
                             $("#messageMessage").text("Record updated!");
                             $("#message").show();
                         },
@@ -67,33 +103,80 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">Phone Number Changer</a>
+                <a class="navbar-brand" href="/">Expense Application</a>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <form id="phoneChangerForm" action="/update" method="post" style="width: 400px">
+        <form id="Expensedata" action="/update" method="post" style="width: 400px">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Update Your Phone Number</h3>
+                    <h3 class="panel-title">Select User:</h3>
+					<select id="user">
+						<option value="udit">Udit</option>
+						<option value="ruchit">Ruchit</option>
+					</select>
+					<br></br>
+					<div class="row">
+					<label for="Total" class="col-sm-6 control-label">Total Money: 5000</label>
+					<label for="Total" class="col-sm-3 control-label">Remaining:</label>
+					<input type="number" class="col-sm-3" id="remaining" onkeyup="calculate()" placeholder="Balance" readonly="true">
+					</div>
                 </div>
                 <div class="panel-body">
+				<div class="row">
                     <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="For verification" required>
+                        <label for="vegetable" class="col-sm-3 control-label">Vegetable</label>
+                        <select name="veg" class="col-sm-3" id="veg" multiple>
+						  <option value="cabbage">Cabbage</option>
+						  <option value="onion">Onion</option>
+						  <option value="potato">Potato</option>
+						  <option value="carrot">carrot</option>
+						   <option value="carrot">Tomato</option>
+						   <option value="carrot">Bhindi</option>
+						    <option value="carrot">Beans</option>
+						   <option value="carrot">Lemon</option>
+						   <option value="carrot">Leafy Veg</option>
+						</select>
+						 <label for="vegamount"class="col-sm-3 control-label">Amount</label>
+						<input type="number" class="col-sm-3" id="v0" onkeyup="calculate()" placeholder="Amount">
+					</div>
+					<br></br>
+					<br></br>
+                    <div class="form-group">
+                        <label for="bigbasket"class="col-sm-4 control-label">Big Basket</label>
+						<input type="number" class="col-sm-8" id="v1" onkeyup="calculate()" placeholder="Amount">
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="For verification" required>
+                        <label for="milkcurd"class="col-sm-4 control-label">Milk/Curd</label>
+						<input type="number" class="col-sm-8" id="v2" onkeyup="calculate()" placeholder="Amount">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="For verification" required>
+                        <label for="bread"class="col-sm-4 control-label">Bread</label>
+						<input type="number" class="col-sm-8" id="v3" onkeyup="calculate()" placeholder="Amount">
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" class="form-control" id="phone" placeholder="New Phone Number" required>
+					 <div class="form-group">
+                        <label for="sweet"class="col-sm-4 control-label">Sweet</label>
+						<input type="number" class="col-sm-8" id="v4" onkeyup="calculate()" placeholder="Amount">
+                    </div>
+					<div class="form-group">
+                        <label for="medicine"class="col-sm-4 control-label">Medicine</label>
+						<input type="number" class="col-sm-8" id="v5" onkeyup="calculate()" placeholder="Amount">
+                    </div>
+					<div class="form-group">
+                        <label for="snacks"class="col-sm-4 control-label">Snacks</label>
+						<input type="number" class="col-sm-8" id="v6" onkeyup="calculate()" placeholder="Amount">
+                    </div>
+					<div class="form-group">
+                        <label for="bangbajar"class="col-sm-4 control-label">Bang Bajar</label>
+						<input type="number" class="col-sm-8" id="v7" onkeyup="calculate()" placeholder="Amount">
+                    </div>
+					<div class="form-group">
+                        <label for="other"class="col-sm-2 control-label">Other</label>
+                        <textarea rows="3" cols="80" class="col-sm-4" id="other"></textarea>
+						<label for="otheramount"class="col-sm-3 control-label">Amount</label>
+						<input type="number" class="col-sm-3" id="v8" onkeyup="calculate()" placeholder="Amount">
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -102,11 +185,13 @@
                         <span id="messageMessage"></span>
                     </div>
                     <div id="error" class="alert alert-danger" role="alert" style="display: none;">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span
                         <span class="sr-only">Error:</span>
                         <span id="errorMessage"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update Phone Number</button>
+                    <button type="submit" class="col-sm-4 btn btn-primary">Submit</button>
+					<label for="result"class="col-sm-2 control-label">Total</label>
+					<input type="number" class="col-sm-6" id="result" onkeyup="calculate()" placeholder="Readonly" readonly="true">
                 </div>
             </div>
         </form>
